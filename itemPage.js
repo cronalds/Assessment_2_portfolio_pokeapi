@@ -10,9 +10,21 @@ import { itemUrl } from "./config.js";
  */
 let offset = 0;
 
+/**
+ * previous button
+ */
 let pre = document.getElementById("pre");
+/**
+ * next button
+ */
 let next = document.getElementById("next");
+/**
+ * text input for search
+ */
 let searchText = document.getElementById("searchText");
+/**
+ * button for search
+ */
 let searchButton = document.getElementById("searchButton");
 
 // clear the container to be populated by new items
@@ -25,7 +37,7 @@ loadItems();
  * @returns an array of item objects
  */
 async function loadArrayOfItems() {
-  const ArrayOfItems = await fetch(`${itemUrl}?offset=${offset}&limit=20`);
+  const ArrayOfItems = await fetch(`${itemUrl}?offset=${offset}&limit=18`);
   const json = await ArrayOfItems.json();
   return json.results;
 }
@@ -71,7 +83,6 @@ export async function writeItem(ItemNameOrNum){
             <h5 class="card-title">${data.name}</h5>
             <p class="card-text">${data.flavor_text_entries[en].text}</p>
             <p class="card-text">CATEGORY: ${data.category.name}</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
         </div>
     </div>`;
 

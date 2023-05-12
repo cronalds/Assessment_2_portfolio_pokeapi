@@ -10,9 +10,21 @@ import { pokeUrl } from "./config.js";
  */
 let offset = 0;
 
+/**
+ * previous button
+ */
 let pre = document.getElementById("pre");
+/**
+ * next button
+ */
 let next = document.getElementById("next");
+/**
+ * text input for search
+ */
 let searchText = document.getElementById("searchText");
+/**
+ * button for search
+ */
 let searchButton = document.getElementById("searchButton");
 
 // clear the container to be populated by new items
@@ -25,7 +37,7 @@ loadPokemon();
  * @returns an array of pokemon objects
  */
 async function loadArrayOfPokemon() {
-  const ArrayOfPokemon = await fetch(`${pokeUrl}?offset=${offset}&limit=20`);
+  const ArrayOfPokemon = await fetch(`${pokeUrl}?offset=${offset}&limit=18`);
   const json = await ArrayOfPokemon.json();
   return json.results;
 }
@@ -72,7 +84,6 @@ export async function writePokemon(pokemonNameOrNum){
           <p class="card-text">ID: ${data.id}</p>
           <p class="card-text">ORDER: ${data.order}</p>
           <p class="card-text">TYPE(S): ${types.join(', ')}</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
       </div>
   </div>`;
 
