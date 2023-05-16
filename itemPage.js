@@ -54,29 +54,31 @@ async function loadItems() {
 
 /**
  * Performs a search for an item by name or id
- * @param {*} nameOrNum 
+ * @param {*} nameOrNum
  */
-async function searchItem(nameOrNum)
-{
+async function searchItem(nameOrNum) {
   div.innerHTML = "";
   writeItem(nameOrNum);
 }
 
 /**
  * writes an item to a card and places it into the page; name or number works
- * @param {*} ItemNameOrNum 
+ * @param {*} ItemNameOrNum
  */
-export async function writeItem(ItemNameOrNum){
-    let url = `${itemUrl}${ItemNameOrNum.toLowerCase()}`;
-    let response = await fetch(url);
-    let data = await response.json();
-    let flavor = [];
-    for(let i = 0; i < data.flavor_text_entries.length; i++){
-        flavor.push(data.flavor_text_entries[i].language.name);
-    }
+export async function writeItem(ItemNameOrNum) {
+  let url = `${itemUrl}${ItemNameOrNum.toLowerCase()}`;
+  let response = await fetch(url);
+  let data = await response.json();
 
-    let en = flavor.indexOf('en');
-    let content = div.innerHTML + 
+  let flavor = [];
+  for (let i = 0; i < data.flavor_text_entries.length; i++) {
+    flavor.push(data.flavor_text_entries[i].language.name);
+  }
+
+  let en = flavor.indexOf("en");
+
+  let content =
+    div.innerHTML +
     `<div class="card col-lg-2 col-md-4 col-sm-6">
         <img src="${data.sprites.default}" class="card-img-top" alt="${data.name}">
         <div class="card-body">
@@ -86,18 +88,22 @@ export async function writeItem(ItemNameOrNum){
         </div>
     </div>`;
 
-    div.innerHTML = content;
+  div.innerHTML = content;
 }
 
 searchButton.addEventListener("click", async () => {
-  try{
+  try {
     searchItem(searchText.value);
-  }
-  catch{}
-})
+
+    if (div.innerHTML == "") {
+      div.innerHTML =
+        "<h1 style='color: red;'>No results found; check spelling for errors and try again</h1>";
+    }
+  } catch {}
+});
 
 try {
-    // paginates to the next array of items
+  // paginates to the next array of items
   next.addEventListener("click", async () => {
     div.innerHTML = "";
     offset += 20;

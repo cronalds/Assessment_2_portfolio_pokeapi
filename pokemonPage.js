@@ -110,11 +110,17 @@ try {
       await writePokemon(String(offset + i + 1));
     }
   });
-} catch {}
+} catch {
+  
+}
 
 searchButton.addEventListener("click", async () => {
   try{
     searchPokemon(searchText.value);
+
+    if (div.innerHTML == "") {
+      div.innerHTML = "<h1 style='color: red;'>No results found; check spelling for errors and try again</h1>";
+    }
   }
   catch{}
 })
