@@ -54,74 +54,76 @@ async function loadPokemon() {
 
 /**
  * performs a search for a pokemon by name or id
- * @param {*} nameOrNum 
+ * @param {*} nameOrNum
  */
-async function searchPokemon(nameOrNum)
-{
+async function searchPokemon(nameOrNum) {
   div.innerHTML = "";
   writePokemon(nameOrNum);
 }
 
 /**
  * writes a pokemon to a card and places it into the page; name or number works
- * @param {*} pokemonNameOrNum 
+ * @param {*} pokemonNameOrNum
  */
-export async function writePokemon(pokemonNameOrNum){
-  let url = `${pokeUrl}${pokemonNameOrNum.toLowerCase()}`;
-  let response = await fetch(url);
-  let data = await response.json();
-  
-  let types = [];
-  for(let i = 0; i < data.types.length; i++){
+export async function writePokemon(pokemonNameOrNum) {
+  try {
+    let url = `${pokeUrl}${pokemonNameOrNum.toLowerCase()}`;
+    let response = await fetch(url);
+    let data = await response.json();
+
+    let types = [];
+    for (let i = 0; i < data.types.length; i++) {
       types.push(data.types[i].type.name);
-  }
-  
-  let content = div.innerHTML + 
-  `<div class="card col-lg-2 col-md-4 col-sm-6">
-      <img src="${data.sprites.front_default}" class="card-img-top" alt="${data.name}">
+    }
+
+    let content =
+      div.innerHTML +
+      `<div class="card col-lg-2 col-md-4 col-sm-6">
+      <img src="${data.sprites.front_default}" class="card-img-top" alt="${
+        data.name
+      }">
       <div class="card-body">
           <h5 class="card-title">${data.name}</h5>
           <p class="card-text">ID: ${data.id}</p>
           <p class="card-text">ORDER: ${data.order}</p>
-          <p class="card-text">TYPE(S): ${types.join(', ')}</p>
+          <p class="card-text">TYPE(S): ${types.join(", ")}</p>
       </div>
   </div>`;
 
-  div.innerHTML = content;
+    div.innerHTML = content;
+  } catch {
+    div.innerHTML =
+      "<h1 style='color: red;'>No results found; check spelling for errors and try again</h1>";
+  }
 }
 
-try {
-  // paginates to the next array of items
-  next.addEventListener("click", async () => {
+// paginates to the next array of items
+next.addEventListener("click", async () => {
+  if (offset <= 1007) {
     div.innerHTML = "";
-    offset += 20;
+    offset += 18;
     const ArrayOfPokemon = await loadArrayOfPokemon();
     for (let i = 0; i < ArrayOfPokemon.length; i++) {
       await writePokemon(String(offset + i + 1));
-    }
-  });
-
-  // paginates to the prior array of items
-  pre.addEventListener("click", async () => {
-    div.innerHTML = "";
-    offset -= 20;
-    const ArrayOfPokemon = await loadArrayOfPokemon();
-    for (let i = 0; i < ArrayOfPokemon.length; i++) {
-      await writePokemon(String(offset + i + 1));
-    }
-  });
-} catch {
-  
-}
-
-searchButton.addEventListener("click", async () => {
-  try{
-    searchPokemon(searchText.value);
-
-    // i tried putting this into the catch but it didnt work
-    if (div.innerHTML == "") {
-      div.innerHTML = "<h1 style='color: red;'>No results found; check spelling for errors and try again</h1>";
     }
   }
-  catch{}
-})
+});
+
+// paginates to the prior array of items
+pre.addEventListener("click", async () => {
+  if (offset >= 18) {
+    div.innerHTML = "";
+    offset -= 18;
+    const ArrayOfPokemon = await loadArrayOfPokemon();
+    for (let i = 0; i < ArrayOfPokemon.length; i++) {
+      await writePokemon(String(offset + i + 1));
+    }
+  }
+});
+
+/**
+ * on button click search api for result
+ */
+searchButton.addEventListener("click", async () => {
+  searchPokemon(searchText.value);
+});

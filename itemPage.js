@@ -66,7 +66,8 @@ async function searchItem(nameOrNum) {
  * @param {*} ItemNameOrNum
  */
 export async function writeItem(ItemNameOrNum) {
-  let url = `${itemUrl}${ItemNameOrNum.toLowerCase()}`;
+  try{
+    let url = `${itemUrl}${ItemNameOrNum.toLowerCase()}`;
   let response = await fetch(url);
   let data = await response.json();
 
@@ -89,38 +90,37 @@ export async function writeItem(ItemNameOrNum) {
     </div>`;
 
   div.innerHTML = content;
+  }
+  catch(e){
+      div.innerHTML =
+        `<h1 style='color: red;'>No results found; check spelling for errors and try again</h1>`;
+  }
 }
 
 searchButton.addEventListener("click", async () => {
-  try {
-    searchItem(searchText.value);
-    
-    // i tried putting this into the catch but it didnt work
-    if (div.innerHTML == "") {
-      div.innerHTML =
-        "<h1 style='color: red;'>No results found; check spelling for errors and try again</h1>";
-    }
-  } catch {}
+  searchItem(searchText.value);
 });
 
-try {
-  // paginates to the next array of items
-  next.addEventListener("click", async () => {
+// paginates to the next array of items
+next.addEventListener("click", async () => {
+  if (offset <= 2050) {
     div.innerHTML = "";
-    offset += 20;
+    offset += 18;
     const ArrayOfItems = await loadArrayOfItems();
     for (let i = 0; i < ArrayOfItems.length; i++) {
       await writeItem(String(offset + i + 1));
     }
-  });
+  }
+});
 
-  // paginates to the prior array of items
-  pre.addEventListener("click", async () => {
+// paginates to the prior array of items
+pre.addEventListener("click", async () => {
+  if (offset >= 18) {
     div.innerHTML = "";
-    offset -= 20;
+    offset -= 18;
     const ArrayOfItems = await loadArrayOfItems();
     for (let i = 0; i < ArrayOfItems.length; i++) {
       await writeItem(String(offset + i + 1));
     }
-  });
-} catch {}
+  }
+});
