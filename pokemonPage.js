@@ -99,7 +99,8 @@ export async function writePokemon(pokemonNameOrNum) {
 
 // paginates to the next array of items
 next.addEventListener("click", async () => {
-  if (offset <= 1007) {
+  // 989 is 1007 - 18(18 items per page, 1007 pokemon to be pulled from api)
+  if (offset <= 989) {
     div.innerHTML = "";
     offset += 18;
     const ArrayOfPokemon = await loadArrayOfPokemon();

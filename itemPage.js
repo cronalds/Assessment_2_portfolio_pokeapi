@@ -103,7 +103,8 @@ searchButton.addEventListener("click", async () => {
 
 // paginates to the next array of items
 next.addEventListener("click", async () => {
-  if (offset <= 2050) {
+  // 1640 is 1658 - 18(18 items per page, 1658 items in api)
+  if (offset <= 1640) {
     div.innerHTML = "";
     offset += 18;
     const ArrayOfItems = await loadArrayOfItems();
