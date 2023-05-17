@@ -94,7 +94,8 @@ export async function writeItem(ItemNameOrNum) {
 searchButton.addEventListener("click", async () => {
   try {
     searchItem(searchText.value);
-
+    
+    // i tried putting this into the catch but it didnt work
     if (div.innerHTML == "") {
       div.innerHTML =
         "<h1 style='color: red;'>No results found; check spelling for errors and try again</h1>";
