@@ -71,13 +71,25 @@ export async function writeItem(ItemNameOrNum) {
   let response = await fetch(url);
   let data = await response.json();
 
+  /**
+   * flavor text array
+   */
   let flavor = [];
+  /**
+   * flavor text languages check
+   */
   for (let i = 0; i < data.flavor_text_entries.length; i++) {
     flavor.push(data.flavor_text_entries[i].language.name);
   }
 
+  /**
+   * flavor text english index stored to en
+   */
   let en = flavor.indexOf("en");
 
+  /**
+   * content to be output
+   */
   let content =
     div.innerHTML +
     `<div class="card col-lg-2 col-md-4 col-sm-6">

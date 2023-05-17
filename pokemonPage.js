@@ -71,11 +71,17 @@ export async function writePokemon(pokemonNameOrNum) {
     let response = await fetch(url);
     let data = await response.json();
 
+    /**
+     * array of individual pokemons types
+     */
     let types = [];
     for (let i = 0; i < data.types.length; i++) {
       types.push(data.types[i].type.name);
     }
 
+    /**
+     * content to be output
+     */
     let content =
       div.innerHTML +
       `<div class="card col-lg-2 col-md-4 col-sm-6">
@@ -99,7 +105,7 @@ export async function writePokemon(pokemonNameOrNum) {
 
 // paginates to the next array of items
 next.addEventListener("click", async () => {
-  // 989 is 1007 - 18(18 items per page, 1007 pokemon to be pulled from api)
+  // 989 is 1007 - 18(18 items per page, 1007 pokemon to be shown from api)
   if (offset <= 989) {
     div.innerHTML = "";
     offset += 18;
