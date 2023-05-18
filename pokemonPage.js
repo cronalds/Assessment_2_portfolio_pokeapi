@@ -129,8 +129,18 @@ pre.addEventListener("click", async () => {
 });
 
 /**
+ * saves string in searchtext to local storage and recalls it back to searchtext on load
+ */
+window.addEventListener("load", ()=>{
+  if(localStorage.getItem("search") != null){
+    searchText.value = localStorage.getItem("search");
+  }
+})
+
+/**
  * on button click search api for result
  */
 searchButton.addEventListener("click", async () => {
+  localStorage.setItem("search", searchText.value);
   searchPokemon(searchText.value);
 });
